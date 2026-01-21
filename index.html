@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepal Rising | Vision by Nepal Rising</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #DC143C; 
+            --secondary: #003893; 
+            --accent: #FFD700;
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --card-bg: #f8f9fa;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        body.dark-mode {
+            --bg-color: #0f1014;
+            --text-color: #e0e0e0;
+            --card-bg: #1a1b21;
+            --nav-bg: rgba(15, 16, 20, 0.85);
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(128,128,128,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--text-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #b01030);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 20, 60, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 5%;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        .hero-content {
+            color: white;
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .hero-btn-group {
+            animation: fadeInUp 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        section {
+            padding: 6rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        body.dark-mode .section-header p {
+            color: #aaa;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .cause-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .cause-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-content h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        .donation-section {
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: white;
+            border-radius: 30px;
+            margin: 0 5%;
+            padding: 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donation-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .amount-btn {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .amount-btn.active, .amount-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+
+        .custom-amount {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            width: 200px;
+            text-align: center;
+        }
+
+        footer {
+            background: var(--card-bg);
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(128,128,128,0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: var(--text-color);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(128,128,128,0.1);
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--card-bg);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                clip-path: circle(0% at 100% 0);
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                clip-path: circle(150% at 100% 0);
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .donation-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">
+            <i class="fas fa-mountain"></i>
+            Nepal Rising
+        </a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Our Mission</a></li>
+            <li><a href="#causes">Causes</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="theme-toggle" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <a href="#donate" class="btn btn-primary">Donate Now</a>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1>Empowering Nepal,<br>One Life at a Time</h1>
+            <p>Join us in the mission to build sustainable infrastructure and education for the future generations of Nepal.</p>
+            <div class="hero-btn-group">
+                <a href="#donate" class="btn btn-primary">Start Donating</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="section-header reveal">
+            <h2>Our Impact So Far</h2>
+            <p>Transparency is our core value. Here is what we have achieved together.</p>
+        </div>
+        <div class="stats-container reveal">
+            <div class="stat-card">
+                <div class="stat-number" data-target="50">0</div>
+                <p>Schools Rebuilt</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="1200">0</div>
+                <p>Families Supported</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="15">0</div>
+                <p>Districts Covered</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="causes">
+        <div class="section-header reveal">
+            <h2>Urgent Causes</h2>
+            <p>Choose where your contribution goes. Every rupee counts.</p>
+        </div>
+        <div class="cards-grid">
+            <div class="cause-card reveal">
+                <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Education" class="card-img">
+                <div class="card-content">
+                    <h3>Education for All</h3>
+                    <p>Providing books, uniforms, and digital classrooms for rural villages.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <a href="#donate" class="btn btn-primary" style="width: 100%; display:block; text-align:center;">Donate</a>
+                </div>
+            </div>
+
+            <div class="cause-card reveal">
+                <img src="https://images.unsplash.com/photo-1540126034813-121bf29033d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Health" class="card-img">
+                <div class="card-content">
+                    <h3>Rural Healthcare</h3>
+                    <p>Setting up mobile clinics and supplying essential medicines to remote areas.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%"></div>
+                    </div>
+                    <a href="#donate" class="btn btn-primary" style="width: 100%; display:block; text-align:center;">Donate</a>
+                </div>
+            </div>
+
+            <div class="cause-card reveal">
+                <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Infrastructure" class="card-img">
+                <div class="card-content">
+                    <h3>Clean Water Initiative</h3>
+                    <p>Building sustainable water filtration systems in the Terai region.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%"></div>
+                    </div>
+                    <a href="#donate" class="btn btn-primary" style="width: 100%; display:block; text-align:center;">Donate</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="donation-section reveal" id="donate">
+        <h2>Make a Difference Today</h2>
+        <p>Your support transforms lives. Secure payment via Esewa, Khalti, or Card.</p>
+        
+        <div class="donation-options">
+            <button class="amount-btn">Rs 500</button>
+            <button class="amount-btn active">Rs 1000</button>
+            <button class="amount-btn">Rs 5000</button>
+            <input type="number" placeholder="Custom Amount" class="custom-amount">
+        </div>
+
+        <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 3rem;">Proceed to Pay</button>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <a href="#" class="logo">Nepal Rising</a>
+                <p style="margin-top: 1rem; opacity: 0.7;">
+                    Founded by Nepal Rising.<br>
+                    Dedicated to the prosperity of Nepal.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">Mission</a></li>
+                    <li><a href="#donate">Donate</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>Kathmandu, Nepal</li>
+                    <li>aryan92sah@gmail.com</li>
+                    <li>+977 9800000000</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div style="display: flex; gap: 1rem; font-size: 1.2rem;">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2026 Nepal Rising Foundation. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                navLinks.classList.remove('active');
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const amountBtns = document.querySelectorAll('.amount-btn');
+        amountBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                amountBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+
+            revealElements.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+
+        const counters = document.querySelectorAll('.stat-number');
+        let started = false; 
+
+        window.addEventListener('scroll', () => {
+            if (started) return;
+            const statsSection = document.querySelector('.stats-container');
+            const statsPosition = statsSection.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight;
+
+            if(statsPosition < screenPosition) {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const increment = target / 100;
+                    
+                    const updateCounter = () => {
+                        const c = +counter.innerText;
+                        if(c < target) {
+                            counter.innerText = Math.ceil(c + increment);
+                            setTimeout(updateCounter, 20);
+                        } else {
+                            counter.innerText = target + "+";a
+                        }
+                    };
+                    updateCounter();
+                });
+                started = true;
+            }
+        });
+        
+        revealOnScroll();
+    </script>
+</body>
+</html>
