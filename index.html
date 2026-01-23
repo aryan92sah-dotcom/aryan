@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,24 @@
     <link rel="icon" href="mountain.png" type="image/icon type">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
-            --primary: #DC143C; 
-            --secondary: #003893; 
+            --primary: #DC143C;
+            --secondary: #003893;
             --accent: #FFD700;
             --bg-color: #ffffff;
             --text-color: #1a1a1a;
             --card-bg: #f8f9fa;
             --nav-bg: rgba(255, 255, 255, 0.85);
-            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --chat-bg: #ffffff;
+            --chat-header: #DC143C;
+            --chat-text: #1a1a1a;
+            --chat-input: #f0f0f0;
+            --chat-bot-msg: #f0f0f0;
+            --chat-user-msg: #DC143C;
         }
 
         body.dark-mode {
@@ -26,7 +33,13 @@
             --text-color: #e0e0e0;
             --card-bg: #1a1b21;
             --nav-bg: rgba(15, 16, 20, 0.85);
-            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --chat-bg: #1a1b21;
+            --chat-header: #b01030;
+            --chat-text: #e0e0e0;
+            --chat-input: #2c2c2c;
+            --chat-bot-msg: #2c2c2c;
+            --chat-user-msg: #b01030;
         }
 
         * {
@@ -58,7 +71,7 @@
             background: var(--nav-bg);
             backdrop-filter: blur(12px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(128,128,128,0.1);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
         }
 
         .logo {
@@ -152,7 +165,7 @@
             justify-content: center;
             text-align: center;
             padding: 0 5%;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -204,7 +217,7 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        
+
         body.dark-mode .section-header p {
             color: #aaa;
         }
@@ -305,7 +318,7 @@
 
         .amount-btn {
             background: transparent;
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
             padding: 1rem 2rem;
             border-radius: 12px;
@@ -314,14 +327,15 @@
             font-size: 1.1rem;
         }
 
-        .amount-btn.active, .amount-btn:hover {
+        .amount-btn.active,
+        .amount-btn:hover {
             border-color: var(--primary);
             background: var(--primary);
         }
 
         .custom-amount {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             padding: 1rem;
             border-radius: 12px;
             color: white;
@@ -334,14 +348,13 @@
             background: var(--card-bg);
             padding: 4rem 5% 2rem;
             margin-top: 4rem;
-            border-top: 1px solid rgba(128,128,128,0.1);
+            border-top: 1px solid rgba(128, 128, 128, 0.1);
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 3rem;
-            margin-bottom: 3rem;
         }
 
         .footer-col h4 {
@@ -373,7 +386,7 @@
         .copyright {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid rgba(128,128,128,0.1);
+            border-top: 1px solid rgba(128, 128, 128, 0.1);
             opacity: 0.6;
             font-size: 0.9rem;
         }
@@ -389,14 +402,200 @@
             transform: translateY(0);
         }
 
+        /* --- CHATBOT STYLES --- */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+        }
+
+        .chat-toggle-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            border: none;
+        }
+
+        .chat-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-box {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 360px;
+            height: 500px;
+            background: var(--chat-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: fadeIn 0.3s ease;
+            border: 1px solid rgba(128, 128, 128, 0.1);
+        }
+
+        .chat-box.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: var(--chat-header);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h3 {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-chat {
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .bot-message {
+            background: var(--chat-bot-msg);
+            color: var(--chat-text);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .user-message {
+            background: var(--chat-user-msg);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        /* --- NEW ANIMATION STYLE FOR BOT LOADING --- */
+        .bot-thinking-logo {
+            align-self: flex-start;
+            background: transparent !important;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            animation: logoPulse 1.5s infinite ease-in-out;
+        }
+
+        .bot-thinking-logo i {
+            font-size: 1.1rem;
+        }
+
+        @keyframes logoPulse {
+            0% { opacity: 0.6; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.6; transform: scale(0.98); }
+        }
+
+        .chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid rgba(128, 128, 128, 0.1);
+            display: flex;
+            gap: 10px;
+            background: var(--chat-bg);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+            background: var(--chat-input);
+            color: var(--chat-text);
+        }
+
+        .send-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1);
+        }
+
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 768px) {
@@ -428,9 +627,16 @@
             .donation-section {
                 padding: 2rem 1.5rem;
             }
+
+            .chat-box {
+                width: 300px;
+                right: -20px;
+                height: 450px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <nav>
@@ -458,7 +664,8 @@
     <header class="hero" id="home">
         <div class="hero-content">
             <h1>Empowering Nepal,<br>One Life at a Time</h1>
-            <p>Join us in the mission to build sustainable infrastructure and education for the future generations of Nepal.</p>
+            <p>Join us in the mission to build sustainable infrastructure and education for the future generations of
+                Nepal.</p>
             <div class="hero-btn-group">
                 <a href="#donate" class="btn btn-primary">Start Donating</a>
             </div>
@@ -493,38 +700,44 @@
         </div>
         <div class="cards-grid">
             <div class="cause-card reveal">
-                <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Education" class="card-img">
+                <img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Education" class="card-img">
                 <div class="card-content">
                     <h3>Education for All</h3>
                     <p>Providing books, uniforms, and digital classrooms for rural villages.</p>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 75%"></div>
                     </div>
-                    <a href="#donate" class="btn btn-primary" style="width: 100%; display:block; text-align:center;">Donate</a>
+                    <a href="#donate" class="btn btn-primary"
+                        style="width: 100%; display:block; text-align:center;">Donate</a>
                 </div>
             </div>
 
             <div class="cause-card reveal">
-                <img src="https://images.unsplash.com/photo-1540126034813-121bf29033d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Health" class="card-img">
+                <img src="https://images.unsplash.com/photo-1540126034813-121bf29033d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Health" class="card-img">
                 <div class="card-content">
                     <h3>Rural Healthcare</h3>
                     <p>Setting up mobile clinics and supplying essential medicines to remote areas.</p>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 45%"></div>
                     </div>
-                    <a href="#donate" class="btn btn-primary" style="width: 100%; display:block; text-align:center;">Donate</a>
+                    <a href="#donate" class="btn btn-primary"
+                        style="width: 100%; display:block; text-align:center;">Donate</a>
                 </div>
             </div>
 
             <div class="cause-card reveal">
-                <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Infrastructure" class="card-img">
+                <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Infrastructure" class="card-img">
                 <div class="card-content">
                     <h3>Clean Water Initiative</h3>
                     <p>Building sustainable water filtration systems in the Terai region.</p>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 90%"></div>
                     </div>
-                    <a href="#donate" class="btn btn-primary" style="width: 100%; display:block; text-align:center;">Donate</a>
+                    <a href="#donate" class="btn btn-primary"
+                        style="width: 100%; display:block; text-align:center;">Donate</a>
                 </div>
             </div>
         </div>
@@ -533,7 +746,7 @@
     <div class="donation-section reveal" id="donate">
         <h2>Make a Difference Today</h2>
         <p>Your support transforms lives. Secure payment via Esewa, Khalti, or Card.</p>
-        
+
         <div class="donation-options">
             <button class="amount-btn">Rs 500</button>
             <button class="amount-btn active">Rs 1000</button>
@@ -544,7 +757,29 @@
         <button class="btn btn-primary" style="font-size: 1.2rem; padding: 1rem 3rem;">Proceed to Pay</button>
     </div>
 
-    <footer>
+    <div class="chat-widget">
+        <div class="chat-box" id="chat-box">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> Nepal Rising AI</h3>
+                <i class="fas fa-times close-chat" id="close-chat"></i>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    Namaste! I am the Nepal Rising AI. You can ask me how this website works, about our causes, or how
+                    to donate.
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your question...">
+                <button class="send-btn" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button class="chat-toggle-btn" id="chat-toggle">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <footer id="contact">
         <div class="footer-content">
             <div class="footer-col">
                 <a href="#" class="logo">Nepal Rising</a>
@@ -634,7 +869,7 @@
         });
 
         const revealElements = document.querySelectorAll('.reveal');
-        
+
         const revealOnScroll = () => {
             const windowHeight = window.innerHeight;
             const elementVisible = 150;
@@ -650,26 +885,28 @@
         window.addEventListener('scroll', revealOnScroll);
 
         const counters = document.querySelectorAll('.stat-number');
-        let started = false; 
+        let started = false;
 
         window.addEventListener('scroll', () => {
             if (started) return;
             const statsSection = document.querySelector('.stats-container');
+            if (!statsSection) return;
+
             const statsPosition = statsSection.getBoundingClientRect().top;
             const screenPosition = window.innerHeight;
 
-            if(statsPosition < screenPosition) {
+            if (statsPosition < screenPosition) {
                 counters.forEach(counter => {
                     const target = +counter.getAttribute('data-target');
                     const increment = target / 100;
-                    
+
                     const updateCounter = () => {
                         const c = +counter.innerText;
-                        if(c < target) {
+                        if (c < target) {
                             counter.innerText = Math.ceil(c + increment);
                             setTimeout(updateCounter, 20);
                         } else {
-                            counter.innerText = target + "+";a
+                            counter.innerText = target + "+";
                         }
                     };
                     updateCounter();
@@ -677,8 +914,165 @@
                 started = true;
             }
         });
-        
+
         revealOnScroll();
+
+        // --- EXTENDED AI CHATBOT LOGIC ---
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatBox = document.getElementById('chat-box');
+        const closeChat = document.getElementById('close-chat');
+        const sendBtn = document.getElementById('send-btn');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Toggle Chat
+        chatToggle.addEventListener('click', () => {
+            if (chatBox.style.display === 'flex') {
+                chatBox.style.display = 'none';
+            } else {
+                chatBox.style.display = 'flex';
+                chatInput.focus();
+            }
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatBox.style.display = 'none';
+        });
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (text === '') return;
+
+            // 1. Show User Message
+            addMessage(text, 'user-message');
+            chatInput.value = '';
+
+            // 2. Add Loading Animation (The requested Logo Animation)
+            const loaderID = 'bot-loader-' + Date.now();
+            const loaderHTML = `
+                <div id="${loaderID}" class="message bot-thinking-logo">
+                    <i class="fas fa-mountain"></i> Nepal Rising...
+                </div>
+            `;
+            chatMessages.insertAdjacentHTML('beforeend', loaderHTML);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // 3. Wait 1.5s, then remove Logo and show Answer
+            setTimeout(() => {
+                // Remove the loading animation element
+                const loaderEl = document.getElementById(loaderID);
+                if (loaderEl) loaderEl.remove();
+
+                // Get and show the actual response
+                const botResponse = getBotResponse(text);
+                addMessage(botResponse, 'bot-message');
+            }, 1500); 
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        function addMessage(text, className) {
+            const div = document.createElement('div');
+            div.classList.add('message', className);
+            div.innerHTML = text;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // --- THE ADVANCED BRAIN ---
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            // 1. GREETINGS
+            if (input.match(/\b(hi|hello|hey|namaste|morning|evening)\b/)) {
+                return "Namaste! Welcome to Nepal Rising. I can explain how this website works, how to donate, or details about our causes. What would you like to know?";
+            }
+
+            // 2. HOW THE WEBSITE WORKS (PROCESS)
+            else if (input.match(/(how.*work|process|steps|how to use)/)) {
+                return "It's a 3-step process:<br>1. <b>Choose:</b> Pick a cause (Water, Education, or Health).<br>2. <b>Donate:</b> Use Esewa, Khalti, or Card.<br>3. <b>Impact:</b> Receive an email update showing exactly how your money helped.";
+            }
+
+            // 3. PAYMENT & BANKING
+            else if (input.match(/(pay|bank|esewa|khalti|card|visa|mastercard|money|transfer)/)) {
+                return "We support secure payments via <b>Esewa, Khalti, ConnectIPS, and Major Credit Cards</b> (Visa/Mastercard). All transactions are encrypted and secure.";
+            }
+
+            // 4. TRUST, SCAMS & TRANSPARENCY
+            else if (input.match(/(scam|real|fake|trust|registered|legal|where.*money|receipt|tax)/)) {
+                return "We are a fully registered non-profit in Nepal (Reg No: 123-XYZ). We practice 100% transparency. You will receive a tax-deductible receipt via email immediately after donating.";
+            }
+
+            // 5. VOLUNTEERING & JOBS
+            else if (input.match(/(volunteer|join|job|work for you|intern|career|help)/)) {
+                return "We love volunteers! We often need help in the field (Terai region) or remotely. Please send your CV or interest letter to <b>aryan92sah@gmail.com</b>.";
+            }
+
+            // 6. SPECIFIC CAUSES
+            else if (input.includes('water') || input.includes('clean')) {
+                return "Our <b>Clean Water Initiative</b> focuses on the Terai region. We install filtration pumps that serve entire villages. Rs 5000 can help build one pump!";
+            }
+            else if (input.includes('school') || input.includes('education') || input.includes('book')) {
+                return "Our <b>Education for All</b> program rebuilds schools damaged by earthquakes and provides books/uniforms. We have rebuilt 50 schools so far.";
+            }
+            else if (input.includes('health') || input.includes('clinic') || input.includes('doctor') || input.includes('medicine')) {
+                return "Our <b>Rural Healthcare</b> cause sends mobile clinics to remote mountains where there are no hospitals. We provide free checkups and essential medicines.";
+            }
+
+            // 7. TECHNICAL ISSUES
+            else if (input.match(/(broken|error|bug|not working|fail|stuck)/)) {
+                return "I'm sorry you're facing issues. Please try refreshing the page. If the payment failed, check your internet connection or contact us at +977 9800000000 for manual assistance.";
+            }
+
+            // 8. REFUNDS
+            else if (input.match(/(refund|return|cancel|mistake)/)) {
+                return "If you made a donation by mistake, please contact us within 24 hours at aryan92sah@gmail.com with your Transaction ID, and we will process a full refund.";
+            }
+
+            // 9. LOCATION
+            else if (input.match(/(where|location|address|office)/)) {
+                return "Our head office is in Kathmandu, but our projects are active in 15 districts across Nepal.";
+            }
+
+            // 10. WHO MADE THIS
+            else if (input.match(/(who.*made|developer|creator|design)/)) {
+                return "This platform acts as a bridge between generous donors like you and communities in need, maintained by the Nepal Rising tech team.";
+            }
+
+            // 11. GENERAL DONATION
+            else if (input.includes('donate')) {
+                return "To donate, scroll down to the red section at the bottom. You can choose Rs 500, Rs 1000, or a custom amount. Every rupee counts!";
+            }
+
+            // 12. PHYSICAL DONATIONS (FOOD/CLOTHES)
+            else if (input.match(/(food|clothes|books|physical|medicine|donation.*other)/)) {
+                return "Yes! While our website handles cash for fast relief, we also accept clothes, books, and dry food at our <b>Kathmandu collection center</b>. Please email us for the drop-off location.";
+            }
+
+            // 13. WHY NEPAL RISING?
+            else if (input.match(/(why|special|different)/)) {
+                return "Unlike others, <b>Nepal Rising</b> focuses on sustainable infrastructure—we don't just give food for a day; we build schools and water systems for a lifetime.";
+            }
+
+            // 14. SOCIAL MEDIA
+            else if (input.match(/(facebook|instagram|social|contact|phone)/)) {
+                return "Stay connected! <br>📸 Instagram: @NepalRising <br>📞 Phone: +977 9800000000 <br>📧 Email: aryan92sah@gmail.com";
+            }
+
+            // 15. WHO WILL DEVELOP NEPAL?
+            if (input.match(/(who.*develop.*nepal|who.*build.*nepal|nepal.*development)/)) {
+                return "<b>You and We!</b> Nepal will not be developed by magic; it will be developed by the combined efforts of people like <b>You</b> (the supporters) and <b>Us</b> (Nepal Rising). Together, we provide the tools, and the people of Nepal provide the hard work. 🇳🇵";
+            }
+
+            // DEFAULT / FALLBACK
+            else {
+                return "I am not sure about that, but I am learning! For specific queries, please email us at <b>aryan92sah@gmail.com</b> or call +977 9800000000.";
+            }
+        }
+
     </script>
 </body>
 
